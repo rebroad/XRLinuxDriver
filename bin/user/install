@@ -101,7 +101,14 @@ cp xr_driver_verify $BIN_DIR
 cp xr_driver_uninstall $OLD_BIN_DIR/xreal_driver_uninstall
 popd > /dev/null
 
-cp manifest $DATA_DIR
+# Copy manifest if it exists (for pre-built releases), otherwise create a minimal one for source builds
+if [ -f manifest ]; then
+    cp manifest $DATA_DIR
+else
+    # Create a minimal manifest for source builds
+    echo "# Manifest for source build - verification disabled" > $DATA_DIR/manifest
+    echo "# Files installed from source build at $(date)" >> $DATA_DIR/manifest
+fi
 
 echo "Copying the systemd service to ${SYSTEMD_USER_DIR}"
 sed -i -e "s/{user_home}/$ESCAPED_USER_HOME/g" \

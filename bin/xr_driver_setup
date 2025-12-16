@@ -64,8 +64,11 @@ tar -xf $(basename $binary_path_arg)
 
 pushd xr_driver > /dev/null
 
+# Ensure setup script has execute permissions
+chmod +x bin/setup
+
 # run the setup script that comes with this release, pass in the metrics version
-./setup $metrics_version
+./bin/setup $metrics_version
 
 echo "Deleting temp directory: ${tmp_dir}"
 rm -rf $tmp_dir

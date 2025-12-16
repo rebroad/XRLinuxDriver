@@ -48,6 +48,11 @@ void write_state(driver_state_type *state) {
     fprintf(fp, "heartbeat=%d\n", state->heartbeat);
     if (get_hardware_id()) fprintf(fp, "hardware_id=%s\n", get_hardware_id());
     if (state->device_license) fprintf(fp, "device_license=%s\n", state->device_license);
+
+    // Write device_connected flag (true if device is connected, false otherwise)
+    bool device_connected = (state->connected_device_model && state->connected_device_brand) ? true : false;
+    fprintf(fp, "device_connected=%s\n", device_connected ? "true" : "false");
+
     if (state->connected_device_model && state->connected_device_brand) {
         fprintf(fp, "connected_device_brand=%s\n", state->connected_device_brand);
         fprintf(fp, "connected_device_model=%s\n", state->connected_device_model);
