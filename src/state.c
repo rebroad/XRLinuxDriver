@@ -5,7 +5,6 @@
 #include "plugins.h"
 #include "state.h"
 #include "strings.h"
-#include "system.h"
 
 #include <inttypes.h>
 #include <errno.h>
@@ -46,8 +45,6 @@ void write_state(driver_state_type *state) {
     FILE* fp = get_driver_state_file(state_filename, "w", &full_path);
 
     fprintf(fp, "heartbeat=%d\n", state->heartbeat);
-    if (get_hardware_id()) fprintf(fp, "hardware_id=%s\n", get_hardware_id());
-    if (state->device_license) fprintf(fp, "device_license=%s\n", state->device_license);
 
     // Write device_connected flag (true if device is connected, false otherwise)
     bool device_connected = (state->connected_device_model && state->connected_device_brand) ? true : false;

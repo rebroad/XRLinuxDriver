@@ -4,7 +4,6 @@
 #include "memory.h"
 #include "plugins.h"
 #include "runtime_context.h"
-#include "system.h"
 
 #include <curl/curl.h>
 #include <stdio.h>

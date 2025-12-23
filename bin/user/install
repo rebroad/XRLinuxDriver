@@ -73,17 +73,6 @@ if [ -e "$USER_HOME/.xreal_driver_log" ]; then
   mv $USER_HOME/.xreal_driver_log ${STATE_DIR}/driver.log
 fi
 
-if [ -e "/var/lib/xr_driver/device_license" ]; then
-  echo "Migrating device license to ${STATE_DIR}/license.json"
-  pushd /var/lib/xr_driver > /dev/null
-
-  # since the file has root ownership, rename it before moving to a user directory
-  mv "device_license" "license.json"
-  mv "license.json" "${STATE_DIR}/license.json"
-
-  popd > /dev/null
-fi
-
 # escaping sed replace: https://stackoverflow.com/questions/407523/escape-a-string-for-a-sed-replace-pattern
 ESCAPED_USER_HOME=$(printf '%s\n' "$USER_HOME" | sed -e 's/[\/&]/\\&/g')
 ESCAPED_LD_LIBRARY_PATH=$(printf '%s\n' "$DATA_DIR/lib" | sed -e 's/[\/&]/\\&/g')
@@ -91,11 +80,14 @@ ESCAPED_BIN_DIR=$(printf '%s\n' "$BIN_DIR" | sed -e 's/[\/&]/\\&/g')
 
 echo "Copying driver binary and scripts to ${BIN_DIR} and ${DATA_DIR}"
 pushd bin > /dev/null
-sed -i -e "s/{bin_dir}/$ESCAPED_BIN_DIR/g" xr_driver_verify
+# Create a temporary copy to modify, preserving the original source file
+cp xr_driver_verify xr_driver_verify.tmp
+sed -i -e "s/{bin_dir}/$ESCAPED_BIN_DIR/g" xr_driver_verify.tmp
 cp xrDriver $BIN_DIR
 cp xr_driver_cli $BIN_DIR
 cp xr_driver_uninstall $BIN_DIR
-cp xr_driver_verify $BIN_DIR
+cp xr_driver_verify.tmp $BIN_DIR/xr_driver_verify
+rm -f xr_driver_verify.tmp
 
 # keep putting this in the old location in case an older version of the script tries to find it
 cp xr_driver_uninstall $OLD_BIN_DIR/xreal_driver_uninstall
@@ -111,11 +103,14 @@ else
 fi
 
 echo "Copying the systemd service to ${SYSTEMD_USER_DIR}"
+# Create a temporary copy to modify, preserving the original source file
+cp systemd/xr-driver.service systemd/xr-driver.service.tmp
 sed -i -e "s/{user_home}/$ESCAPED_USER_HOME/g" \
   -e "s/{user}/$USER/g" \
   -e "s/{ld_library_path}/$ESCAPED_LD_LIBRARY_PATH/g" \
-  -e "s/{bin_dir}/$ESCAPED_BIN_DIR/g" systemd/xr-driver.service
-cp systemd/xr-driver.service $SYSTEMD_USER_DIR
+  -e "s/{bin_dir}/$ESCAPED_BIN_DIR/g" systemd/xr-driver.service.tmp
+cp systemd/xr-driver.service.tmp $SYSTEMD_USER_DIR/xr-driver.service
+rm -f systemd/xr-driver.service.tmp
 
 # clear bash's cache of executable locations, so it can find the newly installed scripts
 hash -r

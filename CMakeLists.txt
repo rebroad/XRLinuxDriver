@@ -33,10 +33,6 @@ else()
   message(STATUS "!!! UA_API_SECRET is NOT set")
 endif()
 
-file(READ ${CMAKE_CURRENT_SOURCE_DIR}/license_public_key.pem DEVICE_LICENSE_PUBLIC_KEY_RAW)
-string(REPLACE "\n" "\\n" DEVICE_LICENSE_PUBLIC_KEY_ESCAPED ${DEVICE_LICENSE_PUBLIC_KEY_RAW})
-add_definitions(-DDEVICE_LICENSE_PUBLIC_KEY="${DEVICE_LICENSE_PUBLIC_KEY_ESCAPED}")
-
 find_package(Threads REQUIRED)
 
 pkg_check_modules(LIBUSB REQUIRED libusb-1.0)
@@ -100,9 +96,6 @@ set(SOURCES
     src/devices.c
     src/driver.c
     src/epoch.c
-    src/features/breezy_desktop.c
-    src/features/smooth_follow.c
-    src/features/sbs.c
     src/files.c
     src/logging.c
     src/imu.c
@@ -112,7 +105,6 @@ set(SOURCES
     src/plugins.c
     src/plugins/breezy_desktop.c
     src/plugins/custom_banner.c
-    src/plugins/device_license.c
     src/plugins/gamescope_reshade_wayland.c
     src/plugins/metrics.c
     src/plugins/sideview.c
@@ -124,7 +116,6 @@ set(SOURCES
     src/runtime_context.c
     src/state.c
     src/strings.c
-    src/system.c
     src/wl_client/gamescope_reshade.c
 )
 
