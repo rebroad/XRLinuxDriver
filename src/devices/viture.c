@@ -193,12 +193,16 @@ void handle_viture_event(uint8_t *data, uint16_t len, uint32_t timestamp) {
 
 bool sbs_mode_enabled = false;
 void viture_mcu_callback(uint16_t msgid, uint8_t *data, uint16_t len, uint32_t ts) {
+    (void)len;
+    (void)ts;
     if (msgid == MCU_SBS_ADJUSTMENT_MSG) {
         sbs_mode_enabled = data[0] == MCU_SBS_ADJUSTMENT_ENABLED;
     }
 }
 
 device_properties_type* viture_supported_device(uint16_t vendor_id, uint16_t product_id, uint8_t usb_bus, uint8_t usb_address) {
+    (void)usb_bus;
+    (void)usb_address;
     if (vendor_id == VITURE_ID_VENDOR) {
         for (int i=0; i < VITURE_ID_PRODUCT_COUNT; i++) {
             if (product_id == viture_supported_id_product[i]) {

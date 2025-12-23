@@ -151,6 +151,7 @@ static void opentrack_handle_device_disconnect_func() {
 }
 
 static void opentrack_handle_pose_data_func(imu_pose_type pose, imu_euler_type velocities, bool imu_calibrated, ipc_values_type *ipc_values) {
+    (void)velocities;
     (void)ipc_values;
 
     if (!ot_config || !ot_config->enabled || !imu_calibrated || udp_fd == -1) return;

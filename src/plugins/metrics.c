@@ -15,6 +15,7 @@
 const char *UA_MEASUREMENT_ID = "G-Z94MXP18T6";
 const char *UA_CLIENT_ID="ARLinuxDriver";
 void log_metric(char *event_name) {
+    (void)event_name;
     #ifdef UA_API_SECRET
         if (config()->metrics_disabled) return;
 
@@ -82,6 +83,7 @@ bool was_auto_recenter_enabled = false;
 bool config_auto_recenter_enabled = false;
 
 void metrics_handle_config_line_func(void* config, char* key, char* value) {
+    (void)config;
     if (!config_output_mode) config_output_mode = strdup(mouse_output_mode);
     if (!config_external_mode) config_external_mode = strdup("none");
     if (equal(key, "output_mode")) {
@@ -98,6 +100,7 @@ void metrics_handle_config_line_func(void* config, char* key, char* value) {
 };
 
 void metrics_set_config_func(void* config) {
+    (void)config;
     enum metrics_output_mode new_output_mode = OUTPUT_MODE_DISABLED;
     if (!config_disabled) {
         if (!config_output_mode || equal(config_output_mode, mouse_output_mode)) {
@@ -122,14 +125,14 @@ void metrics_set_config_func(void* config) {
         }
         current_output_mode = new_output_mode;
 
-        if (config_smooth_follow_enabled && (!was_smooth_follow_enabled ||
-                output_mode_changed && new_output_mode == OUTPUT_MODE_SIDEVIEW)) {
+        if (config_smooth_follow_enabled && ((!was_smooth_follow_enabled) ||
+                (output_mode_changed && new_output_mode == OUTPUT_MODE_SIDEVIEW))) {
             log_metric("smooth_follow_enabled");
         }
         was_smooth_follow_enabled = config_smooth_follow_enabled;
 
-        if (config_auto_recenter_enabled && (!was_auto_recenter_enabled ||
-                output_mode_changed && new_output_mode == OUTPUT_MODE_VIRTUAL_DISPLAY)) {
+        if (config_auto_recenter_enabled && ((!was_auto_recenter_enabled) ||
+                (output_mode_changed && new_output_mode == OUTPUT_MODE_VIRTUAL_DISPLAY))) {
             log_metric("auto_recenter_enabled");
         }
         was_auto_recenter_enabled = config_auto_recenter_enabled;

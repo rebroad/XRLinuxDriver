@@ -49,6 +49,7 @@ void update_config(driver_config_type *config, driver_config_type *new_config) {
 }
 
 void boolean_config(char* key, char *value, bool *config_value) {
+    (void)key;
     *config_value = equal(value, "true");
 }
 
@@ -75,6 +76,7 @@ void int_config(char* key, char *value, int *config_value) {
 }
 
 void string_config(char* key, char *value, char **config_value) {
+    (void)key;
     free_and_clear(config_value);
     *config_value = strdup(value);
 }

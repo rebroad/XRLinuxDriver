@@ -11,6 +11,9 @@ set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_C_STANDARD 17)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 
+# Enable warnings
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
+
 find_package(PkgConfig REQUIRED)
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
 set (py_cmd "${CMAKE_SOURCE_DIR}/bin/build_custom_banner_config.py")
@@ -161,6 +164,8 @@ foreach(TARGET ${ALL_TARGETS})
 endforeach()
 
 add_executable(xrDriver ${SOURCES})
+# Treat warnings as errors for our code (not submodules)
+target_compile_options(xrDriver PRIVATE -Werror)
 
 target_include_directories(xrDriver
 		SYSTEM BEFORE PRIVATE

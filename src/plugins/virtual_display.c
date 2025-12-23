@@ -78,8 +78,8 @@ void set_virtual_display_ipc_values() {
     if (device != NULL) {
         bool enabled = !config()->disabled && 
                             (vd_config->enabled ||
-                            vd_config->follow_mode_enabled &&
-                            vd_config->passthrough_smooth_follow_enabled);
+                            (vd_config->follow_mode_enabled &&
+                            vd_config->passthrough_smooth_follow_enabled));
 
         float look_ahead_constant = vd_config->look_ahead_override == 0 ?
                                         device->look_ahead_constant :

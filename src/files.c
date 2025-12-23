@@ -88,8 +88,7 @@ FILE* get_or_create_file(const char *full_path, mode_t directory_mode, const cha
 }
 
 char* get_xdg_file_path_for_app(const char *app_name, const char *filename, const char *xdg_env_var, const char *xdg_fallback_dir) {
-    struct stat st = {0};
-
+    (void)app_name;
     char* base_directory = getenv(xdg_env_var);
 
     if (base_directory == NULL) {

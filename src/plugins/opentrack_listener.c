@@ -256,6 +256,7 @@ static bool opentrack_device_is_sbs_mode() { return false; }
 static bool opentrack_device_set_sbs_mode(bool enabled) { (void)enabled; return false; }
 static bool opentrack_is_connected() { return connected; }
 static void opentrack_disconnect(bool soft) {
+    (void)soft;
     pthread_mutex_lock(&conn_mutex);
     connected = false;
     pthread_cond_broadcast(&conn_cond);

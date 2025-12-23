@@ -16,8 +16,12 @@ void log_init() {
     char *log_file_path = NULL;
     FILE *log_file = get_or_create_state_file("driver.log", NULL, &log_file_path, NULL);
     fclose(log_file);
-    freopen(log_file_path, "a", stdout);
-    freopen(log_file_path, "a", stderr);
+    if (freopen(log_file_path, "a", stdout) == NULL) {
+        // If freopen fails, continue without redirecting stdout
+    }
+    if (freopen(log_file_path, "a", stderr) == NULL) {
+        // If freopen fails, continue without redirecting stderr
+    }
     free_and_clear(&log_file_path);
 
     // when redirecting stdout/stderr to a file, it becomes fully buffered, requiring lots of manual flushing of the

@@ -51,6 +51,8 @@ static connected_device_type* _find_connected_device(libusb_device *usb_device, 
 }
 
 int hotplug_callback(libusb_context *ctx, libusb_device *usb_device, libusb_hotplug_event event, void *user_data) {
+    (void)ctx;
+    (void)user_data;
     struct libusb_device_descriptor descriptor;
     int r = libusb_get_device_descriptor(usb_device, &descriptor);
     if (r < 0) {

@@ -99,7 +99,7 @@ int detect_multi_tap(imu_euler_type velocities, uint32_t timestamp, bool debug) 
                                 if (debug) log_debug("rise and fall took %d, too long for a tap\n", tap_elapsed_ms);
                                 peak_max = 0.0;
                                 mt_state = MT_STATE_IDLE;
-                                tap_count == 0;
+                                tap_count = 0;
                             } else {
                                 if (debug) log_debug("rise and fall took %d\n", tap_elapsed_ms);
                                 tap_count++;

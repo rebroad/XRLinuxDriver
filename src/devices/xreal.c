@@ -169,6 +169,10 @@ void handle_xreal_controller_event(
 		uint8_t brightness,
 		const char* msg
 ) {
+    (void)timestamp;
+    (void)event;
+    (void)brightness;
+    (void)msg;
     // do nothing
 }
 
@@ -207,9 +211,11 @@ bool xreal_device_connect() {
     }
 
     return connected;
-};
+}
 
 device_properties_type* xreal_supported_device(uint16_t vendor_id, uint16_t product_id, uint8_t usb_bus, uint8_t usb_address) {
+    (void)usb_bus;
+    (void)usb_address;
     if (vendor_id == XREAL_ID_VENDOR) {
         for (int i=0; i < XREAL_ID_PRODUCT_COUNT; i++) {
             if (product_id == xreal_supported_id_product[i]) {
@@ -229,9 +235,10 @@ device_properties_type* xreal_supported_device(uint16_t vendor_id, uint16_t prod
     }
 
     return NULL;
-};
+}
 
 void *poll_imu_func(void *arg) {
+    (void)arg;
     if (config()->debug_threads) log_debug("poll_imu_func, starting\n");
 
     while (connected && (!mcu_enabled || glasses_controller) && device_imu_read(glasses_imu, 1) == DEVICE_IMU_ERROR_NO_ERROR);
@@ -247,10 +254,12 @@ void *poll_imu_func(void *arg) {
     glasses_imu = NULL;
 
     if (config()->debug_threads) log_debug("poll_imu_func, exiting\n");
-};
+    return NULL;
+}
 
 bool sbs_mode_change_requested = false;
 void *poll_controller_func(void *arg) {
+    (void)arg;
     if (config()->debug_threads) log_debug("poll_controller_func, starting\n");
     device_driver_mcu_exited = false;
 
@@ -279,7 +288,8 @@ void *poll_controller_func(void *arg) {
     glasses_controller = NULL;
 
     if (config()->debug_threads) log_debug("poll_controller_func, exiting\n");
-};
+    return NULL;
+}
 
 void xreal_block_on_device() {
     if (config()->debug_threads) log_debug("xreal_block_on_device, starting\n");
@@ -309,7 +319,7 @@ void xreal_block_on_device() {
     device_checkin(device);
 
     if (config()->debug_threads) log_debug("xreal_block_on_device, exiting\n");
-};
+}
 
 int get_display_mode_index(int display_mode, const int* display_modes) {
     for (int i = 0; i < MAPPED_DISPLAY_MODE_COUNT; i++) {
@@ -329,7 +339,7 @@ bool xreal_device_is_sbs_mode() {
     }
 
     return false;
-};
+}
 
 bool xreal_device_set_sbs_mode(bool enable) {
     if (!connected || !mcu_enabled || !glasses_controller) return false;
@@ -355,15 +365,16 @@ bool xreal_device_set_sbs_mode(bool enable) {
     sbs_mode_change_requested = true;
 
     return true;
-};
+}
 
 bool xreal_is_connected() {
     return connected;
-};
+}
 
 void xreal_disconnect(bool soft) {
+    (void)soft;
     connected = false;
-};
+}
 
 const device_driver_type xreal_driver = {
     .supported_device_func              = xreal_supported_device,

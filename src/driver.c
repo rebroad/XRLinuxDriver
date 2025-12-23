@@ -253,13 +253,14 @@ void evaluate_block_on_device_ready() {
             device_present() ? "device_present" : "no device_present");
 
     pthread_mutex_lock(&block_on_device_mutex);
-    block_on_device_ready = force_quit || !driver_disabled() && device_present();
+    block_on_device_ready = force_quit || (!driver_disabled() && device_present());
     if (block_on_device_ready) pthread_cond_signal(&block_on_device_cond);
     pthread_mutex_unlock(&block_on_device_mutex);
 }
 
 // pthread function to wait for a supported device, create outputs, and block on the device while it's connected
 void *block_on_device_thread_func(void *arg) {
+    (void)arg;
     while (!force_quit) {
         if (config()->debug_device) log_debug("block_on_device_thread, loop start\n");
 
@@ -308,6 +309,7 @@ void *block_on_device_thread_func(void *arg) {
 
     if (config()->debug_threads)
         log_debug("Exiting block_on_device thread; force_quit %d\n", force_quit);
+    return NULL;
 }
 
 void update_config_from_file(FILE *fp) {
@@ -379,6 +381,7 @@ void update_config_from_file(FILE *fp) {
 char *config_filename = NULL;
 FILE *config_fp;
 void *monitor_config_file_thread_func(void *arg) {
+    (void)arg;
     config_fp = freopen(config_filename, "r", config_fp);
     update_config_from_file(config_fp);
 
@@ -451,10 +454,12 @@ void *monitor_config_file_thread_func(void *arg) {
 
     if (config()->debug_threads)
         log_debug("Exiting monitor_config_file thread; force_quit: %d\n", force_quit);
+    return NULL;
 }
 
 // pthread function to update the state and read control flags
 void *manage_state_thread_func(void *arg) {
+    (void)arg;
     while (!force_quit) {
         device_properties_type* device = device_checkout();
         update_state_from_device(state(), device, device_driver);
@@ -470,6 +475,7 @@ void *manage_state_thread_func(void *arg) {
 
     if (config()->debug_threads)
         log_debug("Exiting write_state thread; force_quit: %d\n", force_quit);
+    return NULL;
 }
 
 void handle_control_flags_update() {
@@ -505,6 +511,7 @@ void handle_control_flags_update() {
 
 // pthread function for watching control flags file
 void *monitor_control_flags_file_thread_func(void *arg) {
+    (void)arg;
     char *control_file_path = NULL;
     FILE* fp = get_driver_state_file(control_flags_filename, "r", &control_file_path);
     if (fp) {
@@ -560,6 +567,7 @@ void *monitor_control_flags_file_thread_func(void *arg) {
 
     if (config()->debug_threads)
         log_debug("Exiting monitor_control_flags_file_thread_func thread; force_quit: %d\n", force_quit);
+    return NULL;
 }
 
 void handle_device_connection_changed(connected_device_type* new_device) {
@@ -595,6 +603,7 @@ void handle_device_connection_changed(connected_device_type* new_device) {
 }
 
 void *monitor_usb_devices_thread_func(void *arg) {
+    (void)arg;
     init_devices();
     while (!force_quit) {
         handle_device_connection_events();
@@ -603,9 +612,12 @@ void *monitor_usb_devices_thread_func(void *arg) {
 
     if (config()->debug_threads)
         log_debug("Exiting monitor_usb_devices_thread_func thread; force_quit: %d\n", force_quit);
+    return NULL;
 }
 
 void segfault_handler(int signal, siginfo_t *si, void *arg) {
+    (void)signal;
+    (void)arg;
     void *error_addr = si->si_addr;
 
     // Write the error address to stderr
@@ -621,6 +633,8 @@ void segfault_handler(int signal, siginfo_t *si, void *arg) {
 }
 
 int main(int argc, const char** argv) {
+    (void)argc;
+    (void)argv;
     struct sigaction sa;
     sa.sa_flags = SA_SIGINFO;
     sa.sa_sigaction = segfault_handler;

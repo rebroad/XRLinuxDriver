@@ -71,6 +71,10 @@ static bool soft_connected = false;
 
 static bool is_sbs_mode = false;
 void rayneo_imu_callback(const float acc[3], const float gyro[3], const float mag[3], uint64_t timestamp){
+    (void)acc;
+    (void)gyro;
+    (void)mag;
+    (void)timestamp;
     if (!soft_connected || driver_disabled()) return;
 
     uint32_t ts = (uint32_t) (timestamp / TS_TO_MS_FACTOR);
@@ -98,7 +102,10 @@ static pthread_cond_t device_name_cond = PTHREAD_COND_INITIALIZER;
 static char* device_brand = NULL;
 static char* device_model = NULL;
 static void rayneo_mcu_callback(uint32_t state, uint64_t timestamp, size_t length, const void* data) {
+    (void)length;
+    (void)data;
     uint32_t ts = (uint32_t) (timestamp / TS_TO_MS_FACTOR);
+    (void)ts;
     if (!soft_connected) return;
     if (state == STATE_EVENT_DEVICE_INFO) {
         pthread_mutex_lock(&device_name_mutex);
@@ -189,6 +196,8 @@ void rayneo_device_disconnect(bool soft, bool is_device_present) {
 };
 
 device_properties_type* rayneo_supported_device(uint16_t vendor_id, uint16_t product_id, uint8_t usb_bus, uint8_t usb_address) {
+    (void)usb_bus;
+    (void)usb_address;
     if (vendor_id == RAYNEO_ID_VENDOR && product_id == RAYNEO_ID_PRODUCT) {
         device_properties_type* device = calloc(1, sizeof(device_properties_type));
         *device = rayneo_properties;

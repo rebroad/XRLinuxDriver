@@ -195,8 +195,8 @@ void smooth_follow_set_config_func(void* config) {
             log_message("Virtual display follow has been %s\n", temp_config->virtual_display_follow_enabled ? "enabled" : "disabled");
 
         if (temp_config->sideview_enabled && 
-                sf_config->sideview_follow_enabled != temp_config->sideview_follow_enabled ||
-            sf_config->sideview_enabled != temp_config->sideview_enabled && temp_config->sideview_follow_enabled)
+                ((sf_config->sideview_follow_enabled != temp_config->sideview_follow_enabled) ||
+                (sf_config->sideview_enabled != temp_config->sideview_enabled && temp_config->sideview_follow_enabled)))
             log_message("Sideview follow has been %s\n", temp_config->sideview_follow_enabled ? "enabled" : "disabled");
 
         if (temp_config->sideview_follow_threshold != sf_config->sideview_follow_threshold)
@@ -219,7 +219,7 @@ follow_state_type next_state_for_angle(float angle_degrees) {
         }
     } else {
         if (isnan(angle_degrees) || angle_degrees < sf_params->return_to_angle ||
-            follow_state != FOLLOW_STATE_SLERPING && angle_degrees < sf_params->lower_angle_threshold) {
+            (follow_state != FOLLOW_STATE_SLERPING && angle_degrees < sf_params->lower_angle_threshold)) {
             follow_state = FOLLOW_STATE_NONE;
         } else if (angle_degrees > sf_params->lower_angle_threshold &&
                 angle_degrees < sf_params->upper_angle_threshold &&
@@ -324,7 +324,7 @@ bool smooth_follow_modify_reference_pose_func(imu_pose_type pose, imu_pose_type*
         return false;
     }
 
-    if (last_timestamp_ms == -1) {
+    if (last_timestamp_ms == (uint32_t)-1) {
         last_timestamp_ms = pose.timestamp_ms;
         return false;
     }
@@ -371,7 +371,7 @@ bool smooth_follow_modify_reference_pose_func(imu_pose_type pose, imu_pose_type*
 
         // smooth follow has been disabled, slerp the screen back to its original center
         if (!smooth_follow_enabled) {
-            if (start_snap_back_timestamp_ms == -1) {
+            if (start_snap_back_timestamp_ms == (uint32_t)-1) {
                 start_snap_back_timestamp_ms = pose.timestamp_ms;
             }
             uint32_t elapsed_snap_back_ms = pose.timestamp_ms - start_snap_back_timestamp_ms;

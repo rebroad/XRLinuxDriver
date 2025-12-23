@@ -79,6 +79,7 @@ static bool sombrero_file_exists() {
 
 static void gamescope_reshade_wl_handle_global(void *data, struct wl_registry *registry,
                        uint32_t name, const char *interface, uint32_t version) {
+    (void)data;
     if (config()->debug_ipc) log_debug("gamescope_reshade_wl_handle_global %s\n", interface);
     if (strcmp(interface, GAMESCOPE_RESHADE_INTERFACE_NAME) == 0) {
         reshade_object = wl_registry_bind(registry, name, 
@@ -277,6 +278,8 @@ static bool do_wl_set_uniform_variable(const char *variable_name, const void *da
 static void _effect_ready_callback(void *data,
                                    struct gamescope_reshade *gamescope_reshade,
                                    const char *effect_path) {
+    (void)data;
+    (void)gamescope_reshade;
     if (config()->debug_ipc) log_debug("_effect_ready_callback: %s\n", effect_path);
     if (effect_ready_callback && equal(effect_path, GAMESCOPE_RESHADE_EFFECT_FILE)) {
         effect_ready_callback();
@@ -347,6 +350,10 @@ void gamescope_reshade_wl_handle_state_func() {
 };
 
 void gamescope_reshade_wl_handle_pose_data_func(imu_pose_type pose, imu_euler_type velocities, bool imu_calibrated, ipc_values_type *ipc_values) {
+    (void)pose;
+    (void)velocities;
+    (void)imu_calibrated;
+    (void)ipc_values;
     if (!reshade_object) return;
     
     pthread_mutex_lock(&wayland_mutex);
