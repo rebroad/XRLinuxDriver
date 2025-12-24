@@ -8,7 +8,7 @@
 
 This driver allows your Linux device (including Steam Deck) to automatically recognize supported XR glasses (see [Supported Devices](#supported-devices)) when they're plugged in, and convert the movements of the glasses into mouse movements and an external broadcast that games or any application can utilize.
 
-If you're looking for a 3dof virtual display, this driver by itself does not provide that functionality; instead, see [Breezy](https://github.com/wheaney/breezy-desktop) or [use the Steam Deck plugin](#steam-deck-via-decky-loader) which installs Breezy under the hood.
+If you're looking for a 3dof virtual display, this driver by itself does not provide that functionality; instead, see [Breezy](https://github.com/rebroad/breezy-desktop) or [use the Steam Deck plugin](#steam-deck-via-decky-loader) which installs Breezy under the hood.
 
 ## Supported Devices
 Check below to see if your device is supported. **Note: be sure you're on the latest firmware for your device.**
@@ -33,9 +33,9 @@ You may still opt to do a manual installation using the instructions below if yo
 
 ### Manual installation
 
-*Note: this installation is for just the base driver with mouse/joystick support. If you're looking for virtual display mode, check out the [breezy-desktop setup](https://github.com/wheaney/breezy-desktop#setup).*
+*Note: this installation is for just the base driver with mouse/joystick support. If you're looking for virtual display mode, check out the [breezy-desktop setup](https://github.com/rebroad/breezy-desktop#setup).*
 
-1. [Download the setup script](https://github.com/wheaney/XRLinuxDriver/releases/latest/download/xr_driver_setup) and set the execute flag (e.g. from the terminal: `chmod +x ~/Downloads/xr_driver_setup`)
+1. [Download the setup script](https://github.com/rebroad/XRLinuxDriver/releases/latest/download/xr_driver_setup) and set the execute flag (e.g. from the terminal: `chmod +x ~/Downloads/xr_driver_setup`)
 2. Run the setup script as root (e.g. `sudo ~/Downloads/xr_driver_setup`)
   
 Your device should now automatically recognize when your glasses are plugged in and translate their movements to mouse movements. If you're not seeing this, check the log at `$XDG_STATE_HOME/xr_driver/driver.log` and report an Issue here with its contents.
