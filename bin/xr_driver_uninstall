@@ -57,9 +57,36 @@ rm -f $SYSTEMD_USER_DIR/xr-driver.service
 UDEV_RULES_DIR="/usr/lib/udev/rules.d"
 ALT_UDEV_RULES_DIR="/etc/udev/rules.d"
 
+# Configure sudo to use GUI password prompt if available and needed
+# First check if sudo password is cached (won't prompt)
+if sudo -v 2>/dev/null; then
+    # Password is cached, use regular sudo (fast, no prompt)
+    SUDO_CMD="sudo"
+elif [ -n "$DISPLAY" ]; then
+    # Password not cached and we have a display - use GUI askpass
+    # Try to find an askpass program for GUI password prompt
+    if [ -z "$SUDO_ASKPASS" ]; then
+        for askpass in ssh-askpass-gnome ssh-askpass gnome-ssh-askpass; do
+            if command -v "$askpass" >/dev/null 2>&1; then
+                export SUDO_ASKPASS="$(command -v $askpass)"
+                break
+            fi
+        done
+    fi
+    # Use -A flag to use askpass program (GUI prompt, prevents password in terminal)
+    if [ -n "$SUDO_ASKPASS" ]; then
+        SUDO_CMD="sudo -A"
+    else
+        SUDO_CMD="sudo"
+    fi
+else
+    # No DISPLAY available, use regular sudo (password will be hidden in terminal)
+    SUDO_CMD="sudo"
+fi
+
 [ "$for_install" -eq 0 ] && echo "Removing the udev rules from ${UDEV_RULES_DIR} or ${ALT_UDEV_RULES_DIR}"
-sudo rm $UDEV_RULES_DIR/70-*-xr.rules > /dev/null 2>&1 || true
-sudo rm $ALT_UDEV_RULES_DIR/70-*-xr.rules > /dev/null 2>&1 || true
+$SUDO_CMD rm $UDEV_RULES_DIR/70-*-xr.rules > /dev/null 2>&1 || true
+$SUDO_CMD rm $ALT_UDEV_RULES_DIR/70-*-xr.rules > /dev/null 2>&1 || true
 
 if [ "$for_install" -eq 0 ]; then
     echo "Removing installed files from $STATE_DIR, $CONFIG_DIR, $DATA_DIR, and $BIN_DIR"
