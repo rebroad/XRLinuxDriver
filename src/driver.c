@@ -38,7 +38,9 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/wait.h>
+#include <stdio.h>
 #include <unistd.h>
+#include "version.h"
 
 #define INOTIFY_EVENT_SIZE (sizeof(struct inotify_event) + NAME_MAX + 1)
 #define INOTIFY_EVENT_BUFFER_SIZE (1024 * INOTIFY_EVENT_SIZE)
@@ -633,8 +635,23 @@ void segfault_handler(int signal, siginfo_t *si, void *arg) {
 }
 
 int main(int argc, const char** argv) {
-    (void)argc;
-    (void)argv;
+    // Handle command-line arguments
+    if (argc > 1) {
+        if (strcmp(argv[1], "--version") == 0 || strcmp(argv[1], "-v") == 0) {
+            printf("%s\n", PROJECT_VERSION);
+            return 0;
+        }
+        if (strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0) {
+            printf("XR Linux Driver - Provides XR headset support for Linux\n");
+            printf("Usage: %s [OPTIONS]\n\n", argv[0]);
+            printf("Options:\n");
+            printf("  -v, --version    Show version information and exit\n");
+            printf("  -h, --help       Show this help message and exit\n");
+            printf("\nWhen run without options, starts the XR driver daemon.\n");
+            return 0;
+        }
+    }
+
     struct sigaction sa;
     sa.sa_flags = SA_SIGINFO;
     sa.sa_sigaction = segfault_handler;
