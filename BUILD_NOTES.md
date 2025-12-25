@@ -1,8 +1,8 @@
-# Build Notes for XFCE4 Compatibility
+# Build Notes for X11/Xorg Compatibility
 
 ## Dependencies Required
 
-To build XRLinuxDriver with XFCE4 compatibility, you need:
+To build XRLinuxDriver with X11/Xorg compatibility, you need:
 
 ```bash
 sudo apt install \
@@ -41,7 +41,7 @@ bin/user/install
 
 **Note:** The `bin/xr_driver_setup` script downloads a pre-built binary, which won't include your source modifications. You must build from source if you've modified the code.
 
-## Testing XFCE4 Compatibility
+## Testing X11/Xorg Compatibility
 
 1. Start the XR driver (if not already running): `systemctl --user start xr-driver`
 2. Launch xfce4-xr-desktop application (it can be set to autostart)
@@ -57,11 +57,11 @@ bin/user/install
 - Settings managed through desktop settings panels
 - More deeply integrated, potentially better performance
 
-**xfce4-xr-desktop** (XFCE4):
+**xfce4-xr-desktop** (X11/Xorg-based desktops):
 - Standalone GUI application (can autostart)
 - User interacts through a control window
 - Provides manual control over XR settings
-- Less integrated but more flexible for XFCE4 users
+- Less integrated but more flexible for X11-based desktop users
 - Performance should be similar for basic operations
 
 ## Verification Checklist

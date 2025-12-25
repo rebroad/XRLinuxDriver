@@ -1,6 +1,6 @@
-# XFCE4 Compatibility
+# X11/Xorg Compatibility
 
-XRLinuxDriver has been updated to work with xfce4-xr-desktop. The xfce4-xr-desktop application now uses XRLinuxDriver's internal command names directly.
+XRLinuxDriver has been updated to work with X11/Xorg-based desktop applications (such as xfce4-xr-desktop). These applications now use XRLinuxDriver's internal command names directly.
 
 ## Command Names Used by xfce4-xr-desktop
 
