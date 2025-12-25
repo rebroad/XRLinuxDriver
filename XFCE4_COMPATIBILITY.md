@@ -1,10 +1,10 @@
 # X11/Xorg Compatibility
 
-XRLinuxDriver has been updated to work with X11/Xorg-based desktop applications (such as xfce4-xr-desktop). These applications now use XRLinuxDriver's internal command names directly.
+XRLinuxDriver's command interface is designed to work with X11/Xorg-based desktop applications. Applications use XRLinuxDriver's internal command names directly.
 
-## Command Names Used by xfce4-xr-desktop
+## Command Names for X11/Xorg Applications
 
-xfce4-xr-desktop now uses XRLinuxDriver's native command names:
+X11/Xorg-based applications (like Breezy Desktop) use XRLinuxDriver's native command names:
 
 | Command | Value Format | Description |
 |---------|--------------|-------------|
@@ -45,7 +45,7 @@ echo "recenter_screen=true" > /dev/shm/xr_driver_control
 
 Check the driver log and state file to verify commands are processed.
 
-## Integration with xfce4-xr-desktop
+## Integration with X11/Xorg Applications
 
-xfce4-xr-desktop has been updated to use XRLinuxDriver's native command names directly. No compatibility layer is needed - the application writes commands in XRLinuxDriver's format.
+X11/Xorg-based applications (like Breezy Desktop) use XRLinuxDriver's native command names directly. No compatibility layer is needed - applications write commands in XRLinuxDriver's format.
 

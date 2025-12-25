@@ -44,25 +44,18 @@ bin/user/install
 ## Testing X11/Xorg Compatibility
 
 1. Start the XR driver (if not already running): `systemctl --user start xr-driver`
-2. Launch xfce4-xr-desktop application (it can be set to autostart)
-3. The application provides a GUI window for controlling XR settings
+2. Launch Breezy Desktop application
+3. Breezy Desktop provides integration with X11/Xorg-based desktop environments
 4. Verify state file includes `device_connected` flag: `cat /dev/shm/xr_driver_state | grep device_connected`
 
-## Differences from Breezy Desktop
+## Breezy Desktop Support
 
-**Breezy Desktop** (GNOME/KDE only):
-- Native desktop extension that integrates directly into the compositor (Mutter/KWin)
-- Works automatically once installed - no GUI window needed
+**Breezy Desktop** supports multiple desktop environments:
+- **GNOME/KDE**: Native desktop extension that integrates directly into the compositor (Mutter/KWin)
+- **X11/Xorg-based desktops**: Uses Xorg modesetting driver with virtual XR connectors
+- Works automatically once installed
 - Creates virtual displays as part of the desktop environment
-- Settings managed through desktop settings panels
-- More deeply integrated, potentially better performance
-
-**xfce4-xr-desktop** (X11/Xorg-based desktops):
-- Standalone GUI application (can autostart)
-- User interacts through a control window
-- Provides manual control over XR settings
-- Less integrated but more flexible for X11-based desktop users
-- Performance should be similar for basic operations
+- Settings managed through desktop settings panels or Breezy Desktop UI
 
 ## Verification Checklist
 
@@ -72,5 +65,5 @@ bin/user/install
 - [x] State file includes device_connected
 - [ ] Full build with dependencies (requires libusb, etc.)
 - [ ] Runtime testing with actual XReal glasses
-- [ ] Integration testing with xfce4-xr-desktop
+- [ ] Integration testing with Breezy Desktop on X11/Xorg
 
